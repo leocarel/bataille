@@ -1,5 +1,3 @@
-// Battle version 2017
-
 public class Battle {
 
 	private int nbVals;
@@ -25,10 +23,10 @@ public class Battle {
 
 	public String toString(){
 		return
-		"Joueur 1 a "+(player1.toString())+"\n"+
-		"Joueur 2 a "+(player2.toString())+"\n"+
-		(trick.isEmpty()?"Le pli est vide":
-		"Le pli contient "+trick.toString())
+		"Joueur 1a "+(player1.toString())+"\n"+
+		"Joueur 2a "+(player2.toString())+"\n"+
+		(trick.isEmpty()?"pli vide":
+		"pli"+trick.toString())
 		;
 	}
 	
@@ -39,15 +37,6 @@ public class Battle {
 				;
 	}
 	
-	// La bataille sans cartes
-	public Battle(){
-		nbVals = 0;
-		player1 = new Deck();
-		player2 = new Deck();
-		trick = new Deck();
-	}
-
-	// Dupliquer une Question
 	public Battle copy(){
 		Battle r = new Battle();
 		r.nbVals = this.get_nbVals();
@@ -57,13 +46,6 @@ public class Battle {
 		return r;
 	}
 	
-	// Question truquée (pour les tests)
-	public Battle(int nbVals,Deck player1,Deck player2){
-		this.nbVals = nbVals;
-		this.player1 = player1;
-		this.player2 = player2;
-		trick = new Deck();
-	}
 
 	public Battle(int nbVals,String player1,String player2){
 		this.nbVals = nbVals;
@@ -88,35 +70,25 @@ public class Battle {
 		this.trick = new Deck(trick);
 	}
 
-	
-	// Question 3.1
-	
-	
-	// Condition initiale d'une Question avec un jeu de cartes 
-	// contenant nbVals valeurs
+
 	public Battle(int nbVals) {
 		this.nbVals = nbVals;
-		Deck d = new Deck(nbVals); // nouveau jeu
-		player1 = new Deck(); // les joueurs n'ont aucune 
-		player2 = new Deck(); // carte en main
-		trick = new Deck(); // pli vide
-		d.riffleShuffle(7); // on bat les cartes
-		for (int i = 0; i < 2 * nbVals; i++) { // puis on les distribue
-			player1.pick(d); // NB : la méthode pick renvoie une carte (int),
-			player2.pick(d); // cette donnée est perdue puisqu'elle n'est stockée nulle part.
+		Deck d = new Deck(nbVals); 
+		player1 = new Deck();
+		player2 = new Deck();
+		trick = new Deck(); 
+		d.riffleShuffle(7); 
+		for (int i = 0; i < 2 * nbVals; i++) { /
+			player1.pick(d); 
+			player2.pick(d); 
 		}
-		// la Question peut commencer
+
 	}
 
-	// Question 3.2
-	
-	// La Question est-elle terminée ?
 	public boolean isOver() {
 		return ((player1.isEmpty()) || (player2.isEmpty()));
 	}
 
-
-	// Un tour de jeu
 	public boolean oneRound() {
 		if (this.isOver()){
 			return false;}
@@ -137,10 +109,7 @@ public class Battle {
 		return true;
 	}
 
-	
-	// Question 3.3
-	
-	// Qui a gagné ?
+
 	public int winner() {
 		int p1 = player1.size();
 		int p2 = player2.size();
@@ -149,35 +118,24 @@ public class Battle {
 				else return 2;
 	}
 
-	
-	// Une Question avec un nombre maximum de coups fixé à l'avance
+
 	public int game(int turns) {
 		while ((turns > 0) && (this.oneRound()))
 			turns--;
 		return this.winner();
 	}
 
-	// Question 4.1
-	
-	// Une Question sans limite de coups avec détection des Questions infinies
 	public int game() {
-		// this est le lièvre
-		// la tortue en est une copie
 		Battle turtle = this.copy();
 		do {
-			// Le lièvre joue deux tours...
 			if(!this.oneRound()) return this.winner();
 			if(!this.oneRound()) return this.winner();
-			// ...alors que la tortue n'en joue qu'un.
+
 			turtle.oneRound();
-			// La tortue n'est utilisée que pour 
-			// la détection des Questions infinies.
 		} while(!this.equals(turtle));
 		return 3;
 	}
-
-	// Question 4.2
-	
+w
 	public static void stats(int nbVals, int nb_of_games){
 		int player1_wins = 0 ;
 		int player2_wins = 0 ;
